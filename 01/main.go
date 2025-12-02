@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
 	"strconv"
 )
 
@@ -35,5 +38,33 @@ func parseTurn(turn string) (int, error) {
 	}
 
 	return sign * val, nil
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input path\n")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Failed to read file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	seq := make([]int, 0)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		turn, err := parseTurn(scanner.Text())
+		if err != nil {
+			log.Fatalf("Failed to parse turn: %v\n", err)
+		}
+
+		seq = append(seq, turn)
+	}
+
+	count := countZeros(50, 100, seq)
+	fmt.Printf("Zeros: %d\n", count)
 }
 
