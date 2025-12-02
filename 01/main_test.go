@@ -24,6 +24,62 @@ func TestCountZerosNegative(t *testing.T) {
 	}
 }
 
+func TestCountZeroPasses(t *testing.T) {
+	initial := 50
+	size := 100
+	cases := []struct{
+		name string
+		seq []int
+		expected int
+	}{
+		{
+			"OverTheTop",
+			[]int{ 100, 100 },
+			2,
+		},
+		{
+			"UnderTheBottom",
+			[]int{ -100, -100 },
+			2,
+		},
+		{
+			"BackAndForth",
+			[]int{ -100, 100, -100, 100 },
+			4,
+		},
+		{
+			"LargePositive",
+			[]int{ 1000 },
+			10,
+		},
+		{
+			"LargeNegative",
+			[]int{ -1000 },
+			10,
+		},
+		{
+			"UpperBound",
+			[]int{ 150 },
+			2,
+		},
+		{
+			"LowerBound",
+			[]int{ -150 },
+			2,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			count := countZeroPasses(initial, size, c.seq)
+
+			if count != c.expected {
+				t.Errorf("Expected %d to be %d", count, c.expected)
+			}
+		})
+	}
+}
+
 func TestParseTurnValid(t *testing.T) {
 	cases := []struct{
 		input string
