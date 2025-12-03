@@ -79,3 +79,47 @@ func TestCountRepeatedFullRange(t *testing.T) {
 	}
 }
 
+func TestCountRepeatedLowerBoundToFull(t *testing.T) {
+	cases := []struct {
+		name string
+		lower, upper uint64
+		expected uint64
+	}{
+		{
+			"DoubleDigit",
+			20, 99,
+			484,
+		},
+		{
+			"DoubleDigitOffset",
+			35, 99,
+			429,
+		},
+		{
+			"QuadrupleDigit",
+			2000, 9999,
+			480760,
+		},
+		{
+			"QuadrupleDigitOffset",
+			6999, 9999,
+			256035,
+		},
+		{
+			"SingleToQuadrupleDigit",
+			57, 9999,
+			495735,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			digits := countRepeated(c.lower, c.upper)
+
+			if digits != c.expected {
+				t.Errorf("Expected %d to be %d", digits, c.expected)
+			}
+		})
+	}
+}
+

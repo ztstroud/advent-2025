@@ -24,6 +24,19 @@ func countRepeated(lower, upper uint64) uint64 {
 		halfMagnitude := pow10(digits / 2)
 
 		countStart := pow10(digits / 2 - 1)
+
+		// The lower bound doesn't have the same number of digits as this band,
+		// it CANNOT impact the lower bound of this band
+		if lowerDigits == digits {
+			countStart = lower / halfMagnitude
+
+			// We do need to make sure that this specific value will be above
+			// the lower bound, and if not bump it up
+			if countStart + countStart * halfMagnitude < lower {
+				countStart += 1
+			}
+		}
+
 		countEnd := halfMagnitude - 1
 
 		for halfVal := countStart; halfVal <= countEnd; halfVal += 1 {
