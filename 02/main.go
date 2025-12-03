@@ -37,7 +37,15 @@ func countRepeated(lower, upper uint64) uint64 {
 			}
 		}
 
+		// The same but inverse logic applies to the end count
 		countEnd := halfMagnitude - 1
+		if upperDigits == digits {
+			countEnd = upper / halfMagnitude
+
+			if countEnd + countEnd * halfMagnitude > upper {
+				countEnd -= 1
+			}
+		}
 
 		for halfVal := countStart; halfVal <= countEnd; halfVal += 1 {
 			count += halfVal + halfVal * halfMagnitude

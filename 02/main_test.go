@@ -123,3 +123,47 @@ func TestCountRepeatedLowerBoundToFull(t *testing.T) {
 	}
 }
 
+func TestCountRepeatedFullToUpperBound(t *testing.T) {
+	cases := []struct {
+		name string
+		lower, upper uint64
+		expected uint64
+	}{
+		{
+			"DoubleDigit",
+			10, 89,
+			396,
+		},
+		{
+			"DoubleDigitOffset",
+			10, 75,
+			231,
+		},
+		{
+			"QuadrupleDigit",
+			1000, 7999,
+			314615,
+		},
+		{
+			"QuadrupleDigitOffset",
+			1000, 6241,
+			186446,
+		},
+		{
+			"SingleToQuadrupleDigit",
+			10, 2711,
+			31401,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			digits := countRepeated(c.lower, c.upper)
+
+			if digits != c.expected {
+				t.Errorf("Expected %d to be %d", digits, c.expected)
+			}
+		})
+	}
+}
+
