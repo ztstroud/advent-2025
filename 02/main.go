@@ -107,6 +107,17 @@ func isMadeOfRepeating(val uint64) bool {
 	return false
 }
 
+func countAnyRepeated(lower, upper uint64) uint64 {
+	count := uint64(0)
+	for i := lower; i <= upper; i += 1 {
+		if isMadeOfRepeating(i) {
+			count += i
+		}
+	}
+
+	return count
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must provide an input file\n")
@@ -120,6 +131,7 @@ func main() {
 
 	content := strings.TrimSpace(string(bytes))
 	sum := uint64(0)
+	anySum := uint64(0)
 
 	for _, rangeSrc := range strings.Split(content, ",") {
 		limits := strings.Split(rangeSrc, "-")
@@ -139,8 +151,10 @@ func main() {
 		}
 
 		sum += countRepeated(lower, upper)
+		anySum += countAnyRepeated(lower, upper)
 	}
 
 	fmt.Printf("Sum of invalid IDs: %d\n", sum)
+	fmt.Printf("Sum of invalid IDs with any repeated sequence: %d\n", anySum)
 }
 
