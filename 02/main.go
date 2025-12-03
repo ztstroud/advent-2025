@@ -1,6 +1,13 @@
 package main
 
-import "math"
+import (
+	"fmt"
+	"log"
+	"math"
+	"os"
+	"strconv"
+	"strings"
+)
 
 func numDigits(val uint64) int {
 	return int(math.Log10(float64(val))) + 1
@@ -53,5 +60,42 @@ func countRepeated(lower, upper uint64) uint64 {
 	}
 
 	return count
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input file\n")
+	}
+
+	path := os.Args[1]
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatalf("Failed to read from file: %s\n%v\n", path, err)
+	}
+
+	content := strings.TrimSpace(string(bytes))
+	sum := uint64(0)
+
+	for _, rangeSrc := range strings.Split(content, ",") {
+		limits := strings.Split(rangeSrc, "-")
+
+		if len(limits) != 2 {
+			log.Fatalf("Invalid range: %s\n", rangeSrc)
+		}
+
+		lower, err := strconv.ParseUint(limits[0], 10, 64)
+		if err != nil {
+			log.Fatalf("Failed to parse lower bound: %s\n%v\n", limits[0], err)
+		}
+
+		upper, err := strconv.ParseUint(limits[1], 10, 64)
+		if err != nil {
+			log.Fatalf("Failed to parse upper bound: %s\n%v\n", limits[1], err)
+		}
+
+		sum += countRepeated(lower, upper)
+	}
+
+	fmt.Printf("Sum of invalid IDs: %d\n", sum)
 }
 
