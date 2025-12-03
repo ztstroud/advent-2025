@@ -196,3 +196,52 @@ func TestCountRepeatedLowerBoundToUpperBound(t *testing.T) {
 	}
 }
 
+func TestIsMadeOfRepeating(t *testing.T) {
+	cases := []struct {
+		name string
+		val uint64
+		expected bool
+	}{
+		{
+			"None",
+			56,
+			false,
+		},
+		{
+			"NoneBig",
+			7168419,
+			false,
+		},
+		{
+			"Almost",
+			123133123,
+			false,
+		},
+		{
+			"SingleRepeating",
+			55,
+			true,
+		},
+		{
+			"DoubleRepeating",
+			1313,
+			true,
+		},
+		{
+			"TripleRepeating",
+			741741,
+			true,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			result := isMadeOfRepeating(c.val)
+
+			if result != c.expected {
+				t.Errorf("Expected %t to be %t", result, c.expected)
+			}
+		})
+	}
+}
+

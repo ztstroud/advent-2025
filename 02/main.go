@@ -77,6 +77,31 @@ func countRepeated(lower, upper uint64) uint64 {
 	return count
 }
 
+func isMadeOfRepeating(val uint64) bool {
+	for i := 1; i < numDigits(val); i += 1 {
+		window := pow10(i)
+		windowVal := val % window
+
+		slide := val
+		windowRepeating := true
+
+		for slide > 0 {
+			if slide % window != windowVal {
+				windowRepeating = false
+				break
+			}
+
+			slide /= window
+		}
+
+		if windowRepeating {
+			return true
+		}
+	}
+
+	return false
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must provide an input file\n")
