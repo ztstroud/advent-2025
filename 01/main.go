@@ -33,6 +33,8 @@ func countZeroPasses(initial, size int, seq []int) int {
 		newVal := val + turn
 
 		// Interestingly, go's math.Abs function is only for float64
+		// They really don't seem to want to add it:
+		// https://github.com/golang/go/issues/60623
 		passes := newVal / size
 		if passes < 0 {
 			passes *= -1
