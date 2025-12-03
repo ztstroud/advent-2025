@@ -232,6 +232,11 @@ func TestIsMadeOfRepeating(t *testing.T) {
 			741741,
 			true,
 		},
+		{
+			"FakeLeadingZero",
+			101,
+			false,
+		},
 	}
 
 	for _, c := range cases {

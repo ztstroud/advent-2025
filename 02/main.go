@@ -78,7 +78,12 @@ func countRepeated(lower, upper uint64) uint64 {
 }
 
 func isMadeOfRepeating(val uint64) bool {
-	for i := 1; i < numDigits(val); i += 1 {
+	digits := numDigits(val)
+	for i := 1; i < digits; i += 1 {
+		if digits % i != 0 {
+			continue
+		}
+
 		window := pow10(i)
 		windowVal := val % window
 
