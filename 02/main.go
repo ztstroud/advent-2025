@@ -29,8 +29,22 @@ func countRepeated(lower, upper uint64) uint64 {
 		}
 
 		halfMagnitude := pow10(digits / 2)
+		subMagnitude := pow10(digits / 2 - 1)
 
-		countStart := pow10(digits / 2 - 1)
+		// The diff is the how much you would have to add between each
+		// subsequent invalid ID
+		diff := halfMagnitude + 1
+
+		// The basis is the value of the first invalid ID in the current number
+		// of digits
+		basis := subMagnitude * diff
+
+		// n is zero based index of the id in the current number of digits
+		sumTo := func(n uint64) uint64 {
+			return basis * (n + 1) + diff * (n + 1) * n / 2
+		}
+
+		countStart := subMagnitude
 
 		// The lower bound doesn't have the same number of digits as this band,
 		// it CANNOT impact the lower bound of this band
@@ -54,9 +68,10 @@ func countRepeated(lower, upper uint64) uint64 {
 			}
 		}
 
-		for halfVal := countStart; halfVal <= countEnd; halfVal += 1 {
-			count += halfVal + halfVal * halfMagnitude
-		}
+		startIndex := countStart - subMagnitude
+		endIndex := countEnd - subMagnitude
+
+		count += sumTo(endIndex) - sumTo(startIndex - 1)
 	}
 
 	return count
