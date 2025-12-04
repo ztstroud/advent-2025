@@ -1,5 +1,12 @@
 package main
 
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+)
+
 func firstHighestIndex(vs []int) int {
 	if len(vs) == 0 {
 		return -1
@@ -41,5 +48,28 @@ func largestJolt(bank []int) int {
 	secondIndex := remainingStart + firstHighestIndex(bank[remainingStart:])
 
 	return 10 * bank[firstIndex] + bank[secondIndex]
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input file\n")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Could not read from file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	sum := 0
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		bank := parseBank(scanner.Bytes())
+		sum += largestJolt(bank)
+	}
+
+	fmt.Printf("Sum of largest jolts: %d\n", sum)
 }
 
