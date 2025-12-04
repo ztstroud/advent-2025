@@ -19,6 +19,16 @@ func firstHighestIndex(vs []int) int {
 	panic("highest value in slice is no longer present")
 }
 
+// Use bytes to be explicit about how I am treating the data
+func parseBank(src []byte) []int {
+	bank := make([]int, len(src))
+	for i := range src {
+		bank[i] = int(src[i] - '0')
+	}
+
+	return bank
+}
+
 func largestJolt(bank []int) int {
 	// You always want to use the largest digit you can for the 10s place. Using
 	// a lower digit will always result in a smaller number. However, you cannot

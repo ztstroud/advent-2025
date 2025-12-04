@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestFirstHighestIndex(t *testing.T) {
 	cases := []struct{
@@ -33,6 +36,15 @@ func TestFirstHighestIndex(t *testing.T) {
 				t.Errorf("Expected %d to be %d", actual, c.expected)
 			}
 		})
+	}
+}
+
+func TestParseBank(t *testing.T) {
+	bank := parseBank([]byte("9876543210"))
+	expected := []int{ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 }
+
+	if !reflect.DeepEqual(bank, expected) {
+		t.Errorf("Expected %v to be %v", bank, expected)
 	}
 }
 
