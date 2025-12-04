@@ -50,6 +50,24 @@ func largestJolt(bank []int) int {
 	return 10 * bank[firstIndex] + bank[secondIndex]
 }
 
+// Like largestJolt, but you can specify a number of batteries to include.
+// largestJolt is the equivalent of count = 2
+func largestJoltDynamic(bank []int, count int) int64 {
+	startIndex := 0
+	jolt := int64(0)
+
+	for i := range count {
+		reserved := count - 1 - i
+		subIndex := firstHighestIndex(bank[startIndex:len(bank) - reserved])
+
+		jolt = jolt * 10 + int64(bank[startIndex + subIndex])
+
+		startIndex = startIndex + subIndex + 1
+	}
+
+	return jolt
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must provide an input file\n")

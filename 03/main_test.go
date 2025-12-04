@@ -87,3 +87,47 @@ func TestLargestJolt(t *testing.T) {
 	}
 }
 
+func TestLargestJoltDynamic(t *testing.T) {
+	cases := []struct {
+		name string
+		bank []int
+		count int
+		expected int64
+	}{
+		{
+			"Given1",
+			[]int{ 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1 },
+			12,
+			987654321111,
+		},
+		{
+			"Given2",
+			[]int{ 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9 },
+			12,
+			811111111119,
+		},
+		{
+			"Given3",
+			[]int{ 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8 },
+			12,
+			434234234278,
+		},
+		{
+			"Given4",
+			[]int{ 8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1 },
+			12,
+			888911112111,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			actual := largestJoltDynamic(c.bank, c.count)
+			
+			if actual != c.expected {
+				t.Errorf("Expected %d to be %d", actual, c.expected)
+			}
+		})
+	}
+}
+
