@@ -81,13 +81,17 @@ func main() {
 	defer file.Close()
 
 	sum := 0
+	overrideSum := int64(0)
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		bank := parseBank(scanner.Bytes())
+
 		sum += largestJolt(bank)
+		overrideSum += largestJoltDynamic(bank, 12)
 	}
 
 	fmt.Printf("Sum of largest jolts: %d\n", sum)
+	fmt.Printf("Sum of largest overridden jolts: %d\n", overrideSum)
 }
 
