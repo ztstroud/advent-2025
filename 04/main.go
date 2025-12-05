@@ -76,9 +76,35 @@ func countEqual(grid [][]byte, query byte) int {
 	return count
 }
 
+func removeEqual(grid [][]byte, query byte) {
+	for y := range grid {
+		for x := range grid {
+			if grid[y][x] == query {
+				grid[y][x] = EMPTY
+			}
+		}
+	}
+}
+
 func countAccessibleRolls(grid [][]byte) int {
 	markAccessibleRolls(grid)
 	return countEqual(grid, ACCESSIBLE)
+}
+
+func countAccessibleRollsWithRemoval(grid [][]byte) int {
+	count := 0
+	for {
+		markAccessibleRolls(grid)
+		newlyAccessible := countEqual(grid, ACCESSIBLE)
+
+		if newlyAccessible == 0 {
+			break
+		}
+
+		count += newlyAccessible
+		removeEqual(grid, ACCESSIBLE)
+	}
+	return count
 }
 
 func main() {
@@ -103,7 +129,7 @@ func main() {
 		grid = append(grid, row)
 	}
 
-	count := countAccessibleRolls(grid)
-	fmt.Printf("Accessible rolls: %d\n", count)
+	count := countAccessibleRollsWithRemoval(grid)
+	fmt.Printf("Accessible rolls with removal: %d\n", count)
 }
 

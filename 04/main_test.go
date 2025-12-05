@@ -24,3 +24,25 @@ func TestCountAccessibleRolls(t *testing.T) {
 	}
 }
 
+func TestCountAccessibleRollsWithRemoval(t *testing.T) {
+	grid := [][]byte{
+		[]byte("..@@.@@@@."),
+		[]byte("@@@.@.@.@@"),
+		[]byte("@@@@@.@.@@"),
+		[]byte("@.@@@@..@."),
+		[]byte("@@.@@@@.@@"),
+		[]byte(".@@@@@@@.@"),
+		[]byte(".@.@.@.@@@"),
+		[]byte("@.@@@.@@@@"),
+		[]byte(".@@@@@@@@."),
+		[]byte("@.@.@@@.@."),
+	}
+
+	count := countAccessibleRollsWithRemoval(grid)
+	expected := 43
+
+	if count != expected {
+		t.Errorf("Expected %d to be %d", count, expected)
+	}
+}
+
