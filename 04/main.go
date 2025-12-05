@@ -81,7 +81,10 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		grid = append(grid, scanner.Bytes())
+		row := make([]byte, len(scanner.Bytes()))
+		copy(row, scanner.Bytes())
+
+		grid = append(grid, row)
 	}
 
 	count := countAccessibleRolls(grid)
