@@ -1,5 +1,12 @@
 package main
 
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+)
+
 const EMPTY = '.'
 const ROLL = '@'
 
@@ -56,5 +63,28 @@ func countAccessibleRolls(grid [][]byte) int {
 	}
 
 	return accessibleCount
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must provide an input file\n")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Could not read file: %s\n%v\n", path, err)
+	}
+	defer file.Close()
+
+	grid := make([][]byte, 0)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		grid = append(grid, scanner.Bytes())
+	}
+
+	count := countAccessibleRolls(grid)
+	fmt.Printf("Accessible rolls: %d\n", count)
 }
 
