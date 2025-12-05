@@ -9,9 +9,9 @@ import (
 
 const EMPTY = '.'
 const ROLL = '@'
+const ACCESSIBLE = 'x'
 
-func countAccessibleRolls(grid [][]byte) int {
-	accessibleCount := 0
+func markAccessibleRolls(grid [][]byte) {
 	for y := range grid {
 		for x := range grid {
 			if grid[y][x] == EMPTY {
@@ -21,48 +21,64 @@ func countAccessibleRolls(grid [][]byte) int {
 			surroundingCount := 0
 
 			if y > 0 {
-				if x > 0 && grid[y - 1][x - 1] == ROLL {
+				if x > 0 && grid[y - 1][x - 1] != EMPTY {
 					surroundingCount += 1
 				}
 
-				if grid[y - 1][x] == ROLL {
+				if grid[y - 1][x] != EMPTY {
 					surroundingCount += 1
 				}
 
-				if x < len(grid[y]) - 1 && grid[y - 1][x + 1] == ROLL {
+				if x < len(grid[y]) - 1 && grid[y - 1][x + 1] != EMPTY {
 					surroundingCount += 1
 				}
 			}
 
-			if x > 0 && grid[y][x - 1] == ROLL {
+			if x > 0 && grid[y][x - 1] != EMPTY {
 				surroundingCount += 1
 			}
 
-			if x < len(grid[y]) - 1 && grid[y][x + 1] == ROLL {
+			if x < len(grid[y]) - 1 && grid[y][x + 1] != EMPTY {
 				surroundingCount += 1
 			}
 
 			if y < len(grid) - 1 {
-				if x > 0 && grid[y + 1][x - 1] == ROLL {
+				if x > 0 && grid[y + 1][x - 1] != EMPTY {
 					surroundingCount += 1
 				}
 
-				if grid[y + 1][x] == ROLL {
+				if grid[y + 1][x] != EMPTY {
 					surroundingCount += 1
 				}
 
-				if x < len(grid[y]) - 1 && grid[y + 1][x + 1] == ROLL {
+				if x < len(grid[y]) - 1 && grid[y + 1][x + 1] != EMPTY {
 					surroundingCount += 1
 				}
 			}
 
 			if surroundingCount < 4 {
-				accessibleCount += 1
+				grid[y][x] = ACCESSIBLE
+			}
+		}
+	}
+}
+
+func countEqual(grid [][]byte, query byte) int {
+	count := 0
+	for y := range grid {
+		for x := range grid {
+			if grid[y][x] == query {
+				count += 1
 			}
 		}
 	}
 
-	return accessibleCount
+	return count
+}
+
+func countAccessibleRolls(grid [][]byte) int {
+	markAccessibleRolls(grid)
+	return countEqual(grid, ACCESSIBLE)
 }
 
 func main() {
