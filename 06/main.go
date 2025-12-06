@@ -14,6 +14,23 @@ type Equation struct{
 	operands []uint64
 }
 
+func solveEquation(eq Equation) uint64 {
+	var res uint64
+	if eq.op == ADD {
+		res = 0
+		for _, v := range eq.operands {
+			res += v
+		}
+	} else if eq.op == MUL {
+		res = 1
+		for _, v := range eq.operands {
+			res *= v
+		}
+	}
+
+	return res
+}
+
 func parseEquations(lines []string) ([]Equation, error) {
 	operandSrcs := make([][]string, len(lines) - 1)
 	for i := range operandSrcs {
