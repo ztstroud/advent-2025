@@ -73,6 +73,15 @@ func inAnySpan(val uint64, spans []Span) bool {
 	return false
 }
 
+func countValuesInSpans(spans []Span) uint64 {
+	count := uint64(0)
+	for _, span := range spans {
+		count += span.end - span.start + 1
+	}
+
+	return count
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must specify an input file")
@@ -134,6 +143,9 @@ func main() {
 		}
 	}
 
+	inSpansCount := countValuesInSpans(merged)
+
 	fmt.Printf("In range count: %d\n", count)
+	fmt.Printf("Count in spans: %d\n", inSpansCount)
 }
 

@@ -135,3 +135,17 @@ func TestInAnySpan(t *testing.T) {
     }
 }
 
+func TestCountValuesInSpans(t *testing.T) {
+	spans := []Span{
+		{ 5, 10 },
+		{ 15, 20 },
+	}
+	
+	actual := countValuesInSpans(spans)
+	expected := uint64(12)
+
+	if actual != expected {
+		t.Errorf("Expected %v to be %v", actual, expected)
+	}
+}
+
