@@ -86,3 +86,52 @@ func TestMergeRanges(t *testing.T) {
     }
 }
 
+func TestInAnySpan(t *testing.T) {
+	spans := []Span{
+		{ 5, 10 },
+		{ 15, 20 },
+	}
+
+    cases := []struct{
+        name string
+		val uint64
+		expected bool
+    }{
+		{
+			"BelowBoth",
+			2,
+			false,
+		},
+		{
+			"InLower",
+			7,
+			true,
+		},
+		{
+			"InBetween",
+			12,
+			false,
+		},
+		{
+			"InUpper",
+			17,
+			true,
+		},
+		{
+			"AboveBoth",
+			25,
+			false,
+		},
+    }
+
+    for _, c := range cases {
+        t.Run(c.name, func(t *testing.T) {
+			result := inAnySpan(c.val, spans)
+
+			if result != c.expected {
+				t.Errorf("Expected %t to be %t", result, c.expected)
+			}
+        })
+    }
+}
+

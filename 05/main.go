@@ -41,3 +41,27 @@ func mergeSpans(spans []Span) []Span {
 	return merged[:endIndex + 1]
 }
 
+/*
+Check if the given val is in any of the given spans.
+
+The given spans must be sorted by their start value.
+*/
+func inAnySpan(val uint64, spans []Span) bool {
+	start := 0
+	end := len(spans)
+
+	for start < end {
+		mid := (start + end) / 2
+
+		if val < spans[mid].start {
+			end = mid
+		} else if val > spans[mid].end {
+			start = mid + 1
+		} else {
+			return true
+		}
+	}
+
+	return false
+}
+
