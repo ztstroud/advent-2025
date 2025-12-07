@@ -16,7 +16,7 @@ func TestSimulate(t *testing.T) {
 	actual := simulate(manifold)
 	expected := SimulationResult{
 		uint(4),
-		uint(5),
+		uint64(5),
 	}
 
 	if actual != expected {

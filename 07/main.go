@@ -12,7 +12,7 @@ type SimulationResult struct{
 	splits uint
 
 	// The number of timelines generated
-	timelines uint
+	timelines uint64
 }
 
 /*
@@ -24,7 +24,7 @@ The manifold cannot consecutive splitters '^', or have a splitter at the edge of
 a row.
 */
 func simulate(manifold [][]byte) SimulationResult {
-	beams := make([]uint, len(manifold[0]))
+	beams := make([]uint64, len(manifold[0]))
 	for i, char := range manifold[0] {
 		if char == 'S' {
 			beams[i] = 1
@@ -46,7 +46,7 @@ func simulate(manifold [][]byte) SimulationResult {
 		}
 	}
 
-	totalBeams := uint(0)
+	totalBeams := uint64(0)
 	for _, count := range beams {
 		totalBeams += count
 	}
