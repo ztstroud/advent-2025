@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -75,5 +78,38 @@ func parseEquations(lines []string) ([]Equation, error) {
 	}
 
 	return equations, nil
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatalf("You must specify a file")
+	}
+
+	path := os.Args[1]
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Failed to read from file: %s\n%v\n", path, err)
+	}
+
+	defer file.Close()
+
+	lines := make([]string, 0)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	eqs, err := parseEquations(lines)
+	if err != nil {
+		log.Fatalf("Failed to parse equations: %v", err)
+	}
+
+	resultSum := uint64(0)
+	for _, eq := range eqs {
+		resultSum += solveEquation(eq)
+	}
+
+	fmt.Printf("Sum of results: %d\n", resultSum)
 }
 
