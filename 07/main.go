@@ -7,13 +7,20 @@ import (
 	"os"
 )
 
-/*
-Count the number of times a beam starting at 'S' will split on splitters '^'
+type SimulationResult struct{
+	// The number of times a beam split on a splitter
+	splits uint
+}
 
-The manifold cannot consecutive splitters, or have a splitter at the edge of a
-row.
+/*
+Simulate a manifold and calculate information about it
+
+Beams start from any 'S' in the first row.
+
+The manifold cannot consecutive splitters '^', or have a splitter at the edge of
+a row.
 */
-func countSplits(manifold [][]byte) uint {
+func simulate(manifold [][]byte) SimulationResult {
 	beams := make([]bool, len(manifold[0]))
 	for i, char := range manifold[0] {
 		if char == 'S' {
@@ -36,7 +43,9 @@ func countSplits(manifold [][]byte) uint {
 		}
 	}
 
-	return splitCount
+	return SimulationResult{
+		splitCount,
+	}
 }
 
 func main() {
@@ -61,7 +70,7 @@ func main() {
 		manifold = append(manifold, row)
 	}
 
-	splitCount := countSplits(manifold)
-	fmt.Printf("Split count: %d\n", splitCount)
+	results := simulate(manifold)
+	fmt.Printf("Split count: %d\n", results.splits)
 }
 

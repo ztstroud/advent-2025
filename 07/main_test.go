@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestCountSplits(t *testing.T) {
+func TestSimulate(t *testing.T) {
 	manifold := [][]byte {
 		[]byte("...S..."),
 		[]byte("......."),
@@ -13,8 +13,10 @@ func TestCountSplits(t *testing.T) {
 		[]byte(".^..^.."),
 	}
 
-	actual := countSplits(manifold)
-	expected := uint(4)
+	actual := simulate(manifold)
+	expected := SimulationResult{
+		uint(4),
+	}
 
 	if actual != expected {
 		t.Errorf("Expected %d to be %d", actual, expected)
