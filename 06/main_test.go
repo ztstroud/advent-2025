@@ -61,3 +61,30 @@ func TestParseEqations(t *testing.T) {
 	}
 }
 
+func TestParseEqationsCephalopod(t *testing.T) {
+	result, err := parseEquationsCephalopod([]string{
+		"48  84",
+		"105 27",
+		"+   * ",
+	})
+
+	if err != nil {
+		t.Errorf("Unexpected error: %v\n", err)
+	}
+
+	expected := []Equation{
+		{
+			MUL,
+			[]uint64{ 47, 82 },
+		},
+		{
+			ADD,
+			[]uint64{ 5, 80, 41 },
+		},
+	}
+
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Expected %v to be %v", result, expected)
+	}
+}
+

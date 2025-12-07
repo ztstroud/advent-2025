@@ -80,6 +80,75 @@ func parseEquations(lines []string) ([]Equation, error) {
 	return equations, nil
 }
 
+func parseEquationsCephalopod(lines []string) ([]Equation, error) {
+	col := len(lines[0]) - 1
+	maxOperandLen := len(lines) - 1
+
+	skipBlanks := func() {
+		for col >= 0 {
+			for row := range lines {
+				if lines[row][col] != ' ' {
+					return
+				}
+			}
+
+			col -= 1
+		}
+	}
+
+	skipBlanks()
+
+	eqs := make([]Equation, 0)
+	for col >= 0 {
+		var op int
+		operands := make([]uint64, 0, 4)
+
+		for col >= 0 {
+			value := uint64(0)
+			for row := range maxOperandLen {
+				char := lines[row][col]
+				if char == ' ' {
+					continue
+				}
+
+				if char < '0' || char > '9' {
+					return nil, fmt.Errorf("Invalid digit: %c\n", char)
+				}
+
+				value = value * 10 + uint64(char - '0')
+			}
+
+			operands = append(operands, value)
+
+			opChar := lines[maxOperandLen][col]
+
+			// The column is updated before because it should be updated no
+			// matter what
+			col -= 1
+
+			if opChar != ' ' {
+				switch opChar{
+				case '+':
+					op = ADD
+				case '*':
+					op = MUL
+				default:
+					return nil, fmt.Errorf("Invalid operand: %c", opChar)
+				}
+
+				break
+			}
+
+		}
+
+		eqs = append(eqs, Equation{ op, operands })
+
+		skipBlanks()
+	}
+
+	return eqs, nil
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatalf("You must specify a file")
@@ -100,7 +169,7 @@ func main() {
 		lines = append(lines, scanner.Text())
 	}
 
-	eqs, err := parseEquations(lines)
+	eqs, err := parseEquationsCephalopod(lines)
 	if err != nil {
 		log.Fatalf("Failed to parse equations: %v", err)
 	}
