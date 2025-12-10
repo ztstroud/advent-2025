@@ -55,3 +55,7 @@ func (set DisjointSet) Count() uint {
 	return count
 }
 
+func (set DisjointSet) Size(i uint) uint {
+	return set.size[set.Find(i)]
+}
+
