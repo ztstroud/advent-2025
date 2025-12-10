@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -67,10 +68,6 @@ func main() {
 		log.Fatal("You must specify an input file\n")
 	}
 
-	if len(os.Args) < 3 {
-		log.Fatal("You must specify a pairing size\n")
-	}
-
 	path := os.Args[1]
 	file, err := os.Open(path)
 	if err != nil {
@@ -108,21 +105,24 @@ func main() {
 		points = append(points, Point{ x, y, z })
 	}
 
-	pairingSize, err := strconv.Atoi(os.Args[2])
-	if err != nil {
-		log.Fatalf("Invalid pairing size: %s\n", os.Args[2])
+	edges := make([]Edge, 0, len(points) * len(points))
+	for end := range points {
+		for start := 0; start < end; start += 1 {
+			edges = append(edges, Edge{ start, end, squareDist(points[start], points[end]) })
+		}
 	}
+
+	slices.SortFunc(edges, cmpEdges)
 
 	groups := NewDisjointSet(uint(len(points)))
-	for _, edge := range nShortestEdges(points, pairingSize) {
+	for _, edge := range edges {
 		groups.Merge(uint(edge.start), uint(edge.end))
-	}
+		if groups.Size(uint(edge.start)) == uint(len(points)) {
+			product := points[edge.start].x * points[edge.end].x
+			fmt.Printf("Group product: %d\n", product)
 
-	product := uint(1)
-	for _, largestGroupIndex := range nLargestGroups(groups, 3) {
-		product *= groups.Size(largestGroupIndex)
+			break;
+		}
 	}
-
-	fmt.Printf("Group product: %d\n", product)
 }
 
